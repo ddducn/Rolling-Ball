@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -14,50 +13,54 @@
         >
 
         <ImageView
-            android:layout_width="600px"
-            android:layout_height="800px"
+            android:layout_marginTop="30dp"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
             android:src="@drawable/logo"
             />
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:textSize="65px"
-    android:text="@string/app_name"
-    />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="40dp" />
 <EditText
     android:id="@+id/text_1"
-    android:layout_width="600px"
-    android:layout_height="100px"
-    android:layout_marginTop="60px"
+    android:layout_width="200dp"
+    android:layout_height="50dp"
+    android:layout_marginTop="30dp"
 
     android:hint="@string/input_name"
     />
         <Button
-            android:layout_marginTop="40px"
+            android:layout_marginTop="10dp"
             android:id="@+id/button_1"
-            android:layout_width="600px"
-            android:layout_height="120px"
-            android:text="Play"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="@string/play_btn"
             android:background="#FFFFFF"
             android:drawableRight="@drawable/icon_paly"
+            android:paddingRight="5dp"
 
             />
 
         <Button
             android:id="@+id/button_2"
-            android:layout_width="600px"
-            android:layout_height="120px"
-            android:layout_marginTop="70px"
-            android:text="Rank"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/rank_btn"
             android:background="#FFFFFF"
            android:drawableRight="@drawable/icon_rank"
+            android:paddingRight="5dp"
             />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_marginTop="150px"
-android:text="@string/copy"
+    android:layout_marginTop="100dp"
+android:text="@string/copyright"
     />
 
     </LinearLayout>

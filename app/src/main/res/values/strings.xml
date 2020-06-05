@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Rolling Ball</string>
-    <string name="copy">copy@-Duncan and Ander</string>
+    <string name="copyright">Copyright © - Duncan &amp; Ander</string>
     <string name="input_name">input your name</string>
+    <string name="play_btn">play</string>
+    <string name="rank_btn">rank</string>
 </resources>
