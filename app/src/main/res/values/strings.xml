@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Rolling Ball</string>
+    <string name="copy">copy@-Duncan and Ander</string>
+    <string name="input_name">input your name</string>
 </resources>
