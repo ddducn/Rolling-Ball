@@ -8,15 +8,58 @@
     android:orientation="vertical"
     tools:context=".GameActivity">
 
-    <View
+
+    <LinearLayout
         android:id="@+id/toolView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="#128A43"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/cancel"
+            android:paddingTop="20dp"
+            />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Score: 0"
+        android:textColor="@color/white"
+        android:textSize="70px"
+        android:paddingTop="13dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+      app:srcCompat="@drawable/restart"
+        android:paddingTop="18dp"
+        />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/rank"
+            android:paddingTop="18dp"
+            />
+
+</LinearLayout>
 
     <com.ddducn.assignment8.GameCanvas
         android:id="@+id/gameCanvas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="10"
+
+        />
+
 </LinearLayout>
