@@ -4,79 +4,133 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 public class GameCanvas extends View {
+    // paint
     private Paint paint = new Paint();
 
     // objects
     private Circle ball;
-    private Circle[] targets;
-    private Rectangle[] obstacles;
+    private Circle[] targets = new Circle[3];
+    private Rectangle[] obstacles = new Rectangle[6];
+
+    private GestureDetector gestureDetector;
+
+    private double ballAccX = 0;
+    private double ballAccY = 0;
+
+    private double canvasW = 0;
+    private double canvasH = 0;
+
+    // const time value, t * t / 2
+    private final double STEP_TIMES = 0.04 * 0.04 * 0.5;
 
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        // set paint color
-        paint.setColor(getResources().getColor(R.color.colorPrimary));
-        paint.setColor(getResources().getColor(R.color.purple));
+        // create ball
+        ball = new Circle(750.0, 1500.0, 50.0);
+        ball.setColor(getResources().getColor(R.color.purple));
+
+        // create targets
+        int[][] targetsCoors = {{350, 200}, {700, 400}, {150, 800}};
+        for (int i = 0; i < targets.length; i++) {
+            targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50);
+            targets[i].setColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        // create obstacles
+        int[][] obstaclesCoors = {{400, 600}, {650, 100}, {700, 950}, {400, 1100}, {400, 1400}, {500, 1300}};
+        for (int i = 0; i < obstacles.length; i++) {
+            obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 250, 25);
+            obstacles[i].setColor(getResources().getColor(R.color.black));
+        }
+
+        gestureDetector = new GestureDetector(context, new FlingGestureListener());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float x = (float) ball.getX();
-        float y = (float) ball.getY();
-        float r = (float) ball.getR();
-        canvas.drawCircle(x, y, r, paint);
+        flingBall();
 
+        // draw ball
+        paint.setColor(ball.getColor());
+        canvas.drawCircle((float) ball.getX(), (float) ball.getY(), (float) ball.getR(), paint);
 
-    canvas.drawCircle((float) targets[0].getX(), (float) targets[0].getY(), (float) targets[0].getR(), paint);
-    canvas.drawCircle((float) targets[1].getX(), (float) targets[1].getY(), (float) targets[1].getR(), paint);
-    canvas.drawCircle((float) targets[2].getX(), (float) targets[2].getY(), (float) targets[2].getR(), paint);
-    canvas.drawRect((float) obstacles[0].getY(),(float) obstacles[0].getX(),(float) obstacles[0].getWidth(),(float) obstacles[0].getHeight(),paint);
-    canvas.drawRect((float) obstacles[1].getY(),(float) obstacles[1].getX(),(float) obstacles[1].getWidth(),(float) obstacles[1].getHeight(),paint);
-    canvas.drawRect((float) obstacles[2].getY(),(float) obstacles[2].getX(),(float) obstacles[2].getWidth(),(float) obstacles[2].getHeight(),paint);
-    canvas.drawRect((float) obstacles[3].getY(),(float) obstacles[3].getX(),(float) obstacles[3].getWidth(),(float) obstacles[3].getHeight(),paint);
-    canvas.drawRect((float) obstacles[4].getY(),(float) obstacles[4].getX(),(float) obstacles[4].getWidth(),(float) obstacles[4].getHeight(),paint);
-    canvas.drawRect((float) obstacles[5].getY(),(float) obstacles[5].getX(),(float) obstacles[5].getWidth(),(float) obstacles[5].getHeight(),paint);
-        // draw objects
+        // draw targets
+        paint.setColor(targets[0].getColor());
+        for (Circle target: targets) {
+            canvas.drawCircle((float) target.getX(), (float) target.getY(), (float) target.getR(), paint);
+        }
+
+        // draw obstacles
+        paint.setColor(obstacles[0].getColor());
+        for (Rectangle obstacle: obstacles) {
+            canvas.drawRect((float) obstacle.getX(), (float) obstacle.getY(), (float) (obstacle.getX() + obstacle.getWidth()), (float) (obstacle.getY() + obstacle.getHeight()), paint);
+        }
+
+        invalidate();
+    }
+
+    private void flingBall() {
+        if (ballAccX == 0 || ballAccY == 0) return;
+
+        if (isToHEdge()) ballAccX = -ballAccX;
+        if (isToVEdge()) ballAccY = -ballAccY;
+
+        double dX = ballAccX * STEP_TIMES;
+        double dY = ballAccY * STEP_TIMES;
+
+        ball.moveX(dX);
+        ball.moveY(dY);
+    }
+
+    private boolean isToHEdge() {
+        return ball.getX() <= 0 || ball.getX() >= canvasW - ball.getR();
+    }
+
+    private boolean isToVEdge() {
+        return ball.getY() <= 0 || ball.getY() >= canvasH - ball.getR();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        ball = new Circle(750.0f, 1700.0f, 50.0f);
-        ball.setColor(getResources().getColor(R.color.purple));
-        Circle c1 = new Circle(350.0f, 200.0f, 50.0f);
-        c1.setColor(getResources().getColor(R.color.colorPrimary));
-        Circle c2 = new Circle(700.0f, 400.0f, 50.0f);
-        c2.setColor(getResources().getColor(R.color.colorPrimary));
-        Circle c3 = new Circle(150.0f, 800.0f, 50.0f);
-        c3.setColor(getResources().getColor(R.color.colorPrimary));
+        canvasW = w;
+        canvasH = h;
+    }
 
-        targets = new Circle[3];
-        obstacles=new Rectangle[6];
-        Rectangle r1 = new Rectangle(600, 400, 150, 630);
-        Rectangle r2 = new Rectangle(100, 650, 900, 70);
-        Rectangle r3 = new Rectangle(950, 700, 950, 980);
-        Rectangle r4 = new Rectangle(1100, 400, 150, 1130);
-        Rectangle r5 = new Rectangle(1400, 400, 150, 1430);
-        Rectangle r6 = new Rectangle(1300, 500, 250, 1330);
-        targets[0]=c1;
-        targets[1]=c2;
-        targets[2]=c3;
-        obstacles[0]=r1;
-        obstacles[1]=r2;
-        obstacles[2]=r3;
-        obstacles[3]=r4;
-        obstacles[4]=r5;
-        obstacles[5]=r6;
-        // create objects
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) return true;
+        return super.onTouchEvent(event);
+    }
+
+    private class FlingGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            double touchX = e1.getX(0);
+            double touchY = e1.getY(0);
+
+            if (ball.distance(touchX, touchY) > 20) return false;
+
+            ballAccX = velocityX;
+            ballAccY = velocityY;
+            return false;
+        }
     }
 }
-

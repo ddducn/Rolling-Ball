@@ -30,4 +30,18 @@ public class Circle extends VisibleObject {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public void moveX(double dis) {
+        if (dis == 0) return;
+        x += dis;
+    }
+
+    public void moveY(double dis) {
+        if (dis == 0) return;
+        y += dis;
+    }
+
+    public double distance(double x, double y) {
+        return Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+    }
 }
