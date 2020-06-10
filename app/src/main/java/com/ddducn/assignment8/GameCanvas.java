@@ -46,7 +46,7 @@ public class GameCanvas extends View {
         }
 
         // create obstacles
-        int[][] obstaclesCoors = {{400, 600}, {650, 100}, {700, 950}, {400, 1100}, {400, 1400}, {500, 1300}};
+        int[][] obstaclesCoors = {{150, 600}, {650, 130}, {700, 950}, {100, 1100}, {100, 1400}, {500, 1300}};
         for (int i = 0; i < obstacles.length; i++) {
             obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 250, 25);
             obstacles[i].setColor(getResources().getColor(R.color.black));
