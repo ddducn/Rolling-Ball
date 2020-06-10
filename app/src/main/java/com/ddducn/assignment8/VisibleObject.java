@@ -21,6 +21,16 @@ abstract public class VisibleObject {
         this.y = y;
     }
 
+    public void moveX(double dis) {
+        if (dis == 0) return;
+        x += dis;
+    }
+
+    public void moveY(double dis) {
+        if (dis == 0) return;
+        y += dis;
+    }
+
     public int getColor() {
         return color;
     }

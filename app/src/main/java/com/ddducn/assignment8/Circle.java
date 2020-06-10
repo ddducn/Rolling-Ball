@@ -31,17 +31,21 @@ public class Circle extends VisibleObject {
         this.score = score;
     }
 
-    public void moveX(double dis) {
-        if (dis == 0) return;
-        x += dis;
-    }
-
-    public void moveY(double dis) {
-        if (dis == 0) return;
-        y += dis;
-    }
-
     public double distance(double x, double y) {
         return Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+    }
+
+    public boolean inRange(double min1, double max1, double min2, double max2) {
+        return Math.max(min1, max1) >= Math.min(min2, max2) &&
+                Math.min(min1, max1) <= Math.max(min2, max2);
+    }
+
+    public boolean rectIntersect(Rectangle rect) {
+        return inRange(x - r / Math.sqrt(2), x + r / Math.sqrt(2), rect.getX(), rect.getX() + rect.getWidth()) &&
+                inRange(y - r / Math.sqrt(2), y + r / Math.sqrt(2), rect.getY(), rect.getY() + rect.getHeight());
+    }
+
+    public boolean circleIntersect(Circle circle) {
+       return distance(circle.getX(), circle.getY()) <= r + circle.r;
     }
 }

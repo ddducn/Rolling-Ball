@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -31,11 +32,17 @@ public class GameCanvas extends View {
     // const time value, t * t / 2
     private final double STEP_TIMES = 0.04 * 0.04 * 0.5;
 
+    private int hObsMoveFlag = 1;
+    private int vObsMoveFlag = 1;
+    private final double OBS_MOVE_STEP = 10;
+
+    private final int[] BALL_ORIGINAL = {750, 1500};
+
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         // create ball
-        ball = new Circle(750.0, 1500.0, 50.0);
+        ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0);
         ball.setColor(getResources().getColor(R.color.purple));
 
         // create targets
@@ -46,7 +53,7 @@ public class GameCanvas extends View {
         }
 
         // create obstacles
-        int[][] obstaclesCoors = {{150, 600}, {650, 130}, {700, 950}, {100, 1100}, {100, 1400}, {500, 1300}};
+        int[][] obstaclesCoors = {{150, 600}, {650, 130}, {700, 950}, {100, 1100}, {100, 1400}, {50, 1300}};
         for (int i = 0; i < obstacles.length; i++) {
             obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 250, 25);
             obstacles[i].setColor(getResources().getColor(R.color.black));
@@ -60,6 +67,10 @@ public class GameCanvas extends View {
         super.onDraw(canvas);
 
         flingBall();
+
+        moveObstacles();
+
+        collisionDetect();
 
         // draw ball
         paint.setColor(ball.getColor());
@@ -94,11 +105,51 @@ public class GameCanvas extends View {
     }
 
     private boolean isToHEdge() {
-        return ball.getX() <= 0 || ball.getX() >= canvasW - ball.getR();
+        return ball.getX() <= ball.getR() ||
+                ball.getX() >= canvasW - ball.getR();
     }
 
     private boolean isToVEdge() {
-        return ball.getY() <= 0 || ball.getY() >= canvasH - ball.getR();
+        return ball.getY() <= ball.getR() ||
+                ball.getY() >= canvasH - ball.getR();
+    }
+
+    private void moveObstacles() {
+        // horizontal movable obs
+        Rectangle hObs = obstacles[5];
+        if (hObs.getX() <= 50) hObsMoveFlag = 1;
+        if (hObs.getX() >= 800) hObsMoveFlag = -1;
+        hObs.moveX(OBS_MOVE_STEP * hObsMoveFlag);
+
+        // vertical movable obs
+        Rectangle vObs = obstacles[4];
+        if (vObs.getY() <= 500) vObsMoveFlag = 1;
+        if (vObs.getY() >= 1400) vObsMoveFlag = -1;
+        vObs.moveY(OBS_MOVE_STEP * vObsMoveFlag);
+    }
+
+    private void collisionDetect() {
+        for (Rectangle obs: obstacles) {
+            if (ball.rectIntersect(obs)) {
+                reset();
+                return;
+            }
+        }
+
+        for (Circle target: targets) {
+            if (ball.circleIntersect(target)) {
+                ballAccX = -ballAccX;
+                ballAccY = - ballAccY;
+                return;
+            }
+        }
+    }
+
+    private void reset() {
+        ballAccX = 0;
+        ballAccY = 0;
+        ball.setX(BALL_ORIGINAL[0]);
+        ball.setY(BALL_ORIGINAL[1]);
     }
 
     @Override
@@ -125,8 +176,7 @@ public class GameCanvas extends View {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             double touchX = e1.getX(0);
             double touchY = e1.getY(0);
-
-            if (ball.distance(touchX, touchY) > 20) return false;
+            if (ball.distance(touchX, touchY) > 20) return true;
 
             ballAccX = velocityX;
             ballAccY = velocityY;
