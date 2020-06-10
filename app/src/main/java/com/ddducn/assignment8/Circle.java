@@ -1,8 +1,11 @@
 package com.ddducn.assignment8;
 
+import android.util.Log;
+
 public class Circle extends VisibleObject {
     private double r;
     private int score = 0;
+    private final double SQRT_2 = Math.sqrt(2);
 
     /**
      * @param x - center x
@@ -41,11 +44,20 @@ public class Circle extends VisibleObject {
     }
 
     public boolean rectIntersect(Rectangle rect) {
-        return inRange(x - r / Math.sqrt(2), x + r / Math.sqrt(2), rect.getX(), rect.getX() + rect.getWidth()) &&
-                inRange(y - r / Math.sqrt(2), y + r / Math.sqrt(2), rect.getY(), rect.getY() + rect.getHeight());
+        return inRange(x - r / SQRT_2, x + r / SQRT_2, rect.getX(), rect.getX() + rect.getWidth()) &&
+                inRange(y - r / SQRT_2, y + r / SQRT_2, rect.getY(), rect.getY() + rect.getHeight());
     }
 
     public boolean circleIntersect(Circle circle) {
-       return distance(circle.getX(), circle.getY()) <= r + circle.r;
+       return distance(circle.x, circle.y) <= (r + circle.r);
+    }
+
+    public boolean isIntersectToCircleH(Circle circle) {
+        double angle = angleToCircle(circle);
+        return angle < 45 && angle > -45 || angle > 90 && angle < -90;
+    }
+
+    public double angleToCircle(Circle circle) {
+        return Math.toDegrees(Math.atan2(circle.y - y, circle.x - x));
     }
 }

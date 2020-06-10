@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -67,10 +66,9 @@ public class GameCanvas extends View {
         super.onDraw(canvas);
 
         flingBall();
-
         moveObstacles();
-
-        collisionDetect();
+        obstacleCollisionDetect();
+        targetCollisionDetect();
 
         // draw ball
         paint.setColor(ball.getColor());
@@ -128,20 +126,28 @@ public class GameCanvas extends View {
         vObs.moveY(OBS_MOVE_STEP * vObsMoveFlag);
     }
 
-    private void collisionDetect() {
+    private void obstacleCollisionDetect() {
         for (Rectangle obs: obstacles) {
             if (ball.rectIntersect(obs)) {
                 reset();
                 return;
             }
         }
+    }
 
+    private void targetCollisionDetect() {
         for (Circle target: targets) {
-            if (ball.circleIntersect(target)) {
+            if (!ball.circleIntersect(target)) continue;
+
+            if (ball.isIntersectToCircleH(target)) {
                 ballAccX = -ballAccX;
-                ballAccY = - ballAccY;
-                return;
+            } else {
+                ballAccY = -ballAccY;
             }
+
+            flingBall();
+
+            return;
         }
     }
 
