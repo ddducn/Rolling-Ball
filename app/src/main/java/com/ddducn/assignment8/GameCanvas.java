@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,28 +36,45 @@ public class GameCanvas extends View {
 
     private final int[] BALL_ORIGINAL = {750, 1500};
 
+    private boolean isPlaying = false;
+
+    public GamePlay gamePlayDelegate;
+
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        // create ball
-        ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0);
-        ball.setColor(getResources().getColor(R.color.purple));
+        setupBall();
 
+        setupTargets();
+
+        setupObstacles();
+
+        gestureDetector = new GestureDetector(context, new FlingGestureListener());
+    }
+
+    private void setupBall() {
+        // create ball
+        ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0, 0);
+        ball.setColor(getResources().getColor(R.color.purple));
+    }
+
+    private void setupTargets() {
         // create targets
         int[][] targetsCoors = {{550, 200}, {700, 400}, {150, 800}, {350, 500}, {350, 1400}, {750, 800}};
+        int[] scores = {1, 1, 2, 2, 3, 3};
         for (int i = 0; i < targets.length; i++) {
-            targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50);
+            targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50, scores[i]);
             targets[i].setColor(getResources().getColor(R.color.colorPrimary));
         }
+    }
 
+    private void setupObstacles() {
         // create obstacles
         int[][] obstaclesCoors = {{100, 600}, {150, 100}, {650, 950}, {300, 1600}, {100, 1400}, {50, 1300}};
         for (int i = 0; i < obstacles.length; i++) {
             obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 150, 25);
             obstacles[i].setColor(getResources().getColor(R.color.black));
         }
-
-        gestureDetector = new GestureDetector(context, new FlingGestureListener());
     }
 
     @Override
@@ -90,7 +106,7 @@ public class GameCanvas extends View {
     }
 
     private void flingBall() {
-        if (ballAccX == 0 || ballAccY == 0) return;
+        if (!isPlaying) return;
 
         if (isToHEdge()) ballAccX = -ballAccX;
         if (isToVEdge()) ballAccY = -ballAccY;
@@ -127,6 +143,7 @@ public class GameCanvas extends View {
     }
 
     private void obstacleCollisionDetect() {
+        if (!isPlaying) return;
         for (Rectangle obs: obstacles) {
             if (ball.rectIntersect(obs)) {
                 reset();
@@ -136,6 +153,7 @@ public class GameCanvas extends View {
     }
 
     private void targetCollisionDetect() {
+        if (!isPlaying) return;
         for (Circle target: targets) {
             if (!ball.circleIntersect(target)) continue;
 
@@ -145,10 +163,17 @@ public class GameCanvas extends View {
                 ballAccY = -ballAccY;
             }
 
+            addScore(target);
             flingBall();
 
             return;
         }
+    }
+
+    private void addScore(Circle target) {
+        ball.addScore(target.getScore());
+
+        if (gamePlayDelegate != null) gamePlayDelegate.scoreUpdate(ball.getScore());
     }
 
     private void reset() {
@@ -156,6 +181,11 @@ public class GameCanvas extends View {
         ballAccY = 0;
         ball.setX(BALL_ORIGINAL[0]);
         ball.setY(BALL_ORIGINAL[1]);
+        ball.setScore(0);
+
+        isPlaying = false;
+
+        if (gamePlayDelegate != null) gamePlayDelegate.gameEnd();
     }
 
     @Override
@@ -180,12 +210,16 @@ public class GameCanvas extends View {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (isPlaying) return true;
+
             double touchX = e1.getX(0);
             double touchY = e1.getY(0);
             if (ball.distance(touchX, touchY) > 20) return true;
 
             ballAccX = velocityX;
             ballAccY = velocityY;
+            isPlaying = true;
+
             return false;
         }
     }

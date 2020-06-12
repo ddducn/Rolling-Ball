@@ -15,7 +15,7 @@ public class FullScreenActivity extends AppCompatActivity {
     /**
      * set device into full screen mode
      */
-    private void setFullScreen() {
+    protected void setFullScreen() {
         // hide action bar
         getSupportActionBar().hide();
 

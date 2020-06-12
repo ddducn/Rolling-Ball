@@ -12,10 +12,11 @@ public class Circle extends VisibleObject {
      * @param y - center y
      * @param r - radius
      */
-    public Circle(double x, double y, double r) {
+    public Circle(double x, double y, double r, int score) {
         this.x = x;
         this.y = y;
         this.r = r;
+        this.score = score;
     }
 
     public double getR() {
@@ -32,6 +33,11 @@ public class Circle extends VisibleObject {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void addScore(int newScore) {
+        if (newScore <= 0) return;
+        score += newScore;
     }
 
     public double distance(double x, double y) {
