@@ -17,7 +17,7 @@ public class GameCanvas extends View {
 
     // objects
     private Circle ball;
-    private Circle[] targets = new Circle[3];
+    private Circle[] targets = new Circle[6];
     private Rectangle[] obstacles = new Rectangle[6];
 
     private GestureDetector gestureDetector;
@@ -45,16 +45,16 @@ public class GameCanvas extends View {
         ball.setColor(getResources().getColor(R.color.purple));
 
         // create targets
-        int[][] targetsCoors = {{350, 200}, {700, 400}, {150, 800}};
+        int[][] targetsCoors = {{550, 200}, {700, 400}, {150, 800}, {350, 500}, {350, 1400}, {750, 800}};
         for (int i = 0; i < targets.length; i++) {
             targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50);
             targets[i].setColor(getResources().getColor(R.color.colorPrimary));
         }
 
         // create obstacles
-        int[][] obstaclesCoors = {{150, 600}, {650, 130}, {700, 950}, {100, 1100}, {100, 1400}, {50, 1300}};
+        int[][] obstaclesCoors = {{100, 600}, {150, 100}, {650, 950}, {300, 1600}, {100, 1400}, {50, 1300}};
         for (int i = 0; i < obstacles.length; i++) {
-            obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 250, 25);
+            obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 150, 25);
             obstacles[i].setColor(getResources().getColor(R.color.black));
         }
 
@@ -115,14 +115,14 @@ public class GameCanvas extends View {
     private void moveObstacles() {
         // horizontal movable obs
         Rectangle hObs = obstacles[5];
-        if (hObs.getX() <= 50) hObsMoveFlag = 1;
-        if (hObs.getX() >= 800) hObsMoveFlag = -1;
+        if (hObs.getX() <= 350) hObsMoveFlag = 1;
+        if (hObs.getX() >= 700) hObsMoveFlag = -1;
         hObs.moveX(OBS_MOVE_STEP * hObsMoveFlag);
 
         // vertical movable obs
         Rectangle vObs = obstacles[4];
-        if (vObs.getY() <= 500) vObsMoveFlag = 1;
-        if (vObs.getY() >= 1400) vObsMoveFlag = -1;
+        if (vObs.getY() <= 900) vObsMoveFlag = 1;
+        if (vObs.getY() >= 1200) vObsMoveFlag = -1;
         vObs.moveY(OBS_MOVE_STEP * vObsMoveFlag);
     }
 
