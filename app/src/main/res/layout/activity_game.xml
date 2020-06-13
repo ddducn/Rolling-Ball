@@ -40,8 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-      app:srcCompat="@drawable/restart"
+        app:srcCompat="@drawable/restart"
         android:paddingTop="18dp"
+        android:onClick="onResetButtonClick"
         />
 
         <ImageView

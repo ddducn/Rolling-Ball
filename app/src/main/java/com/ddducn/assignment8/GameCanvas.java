@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class GameCanvas extends View {
+public class GameCanvas extends View implements GameActivityDelegate {
     // paint
     private Paint paint = new Paint();
 
@@ -38,7 +39,7 @@ public class GameCanvas extends View {
 
     private boolean isPlaying = false;
 
-    public GamePlay gamePlayDelegate;
+    public GamePlayDelegate gamePlayDelegate;
 
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +51,8 @@ public class GameCanvas extends View {
         setupObstacles();
 
         gestureDetector = new GestureDetector(context, new FlingGestureListener());
+
+        ((GameActivity) context).gameActivityDelegate = this;
     }
 
     private void setupBall() {
@@ -86,6 +89,12 @@ public class GameCanvas extends View {
         obstacleCollisionDetect();
         targetCollisionDetect();
 
+        drawObjects(canvas);
+
+        invalidate();
+    }
+
+    private void drawObjects(Canvas canvas) {
         // draw ball
         paint.setColor(ball.getColor());
         canvas.drawCircle((float) ball.getX(), (float) ball.getY(), (float) ball.getR(), paint);
@@ -101,8 +110,6 @@ public class GameCanvas extends View {
         for (Rectangle obstacle: obstacles) {
             canvas.drawRect((float) obstacle.getX(), (float) obstacle.getY(), (float) (obstacle.getX() + obstacle.getWidth()), (float) (obstacle.getY() + obstacle.getHeight()), paint);
         }
-
-        invalidate();
     }
 
     private void flingBall() {
@@ -200,6 +207,11 @@ public class GameCanvas extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (gestureDetector.onTouchEvent(event)) return true;
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void requestReset() {
+        reset();
     }
 
     private class FlingGestureListener extends GestureDetector.SimpleOnGestureListener {

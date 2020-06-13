@@ -1,7 +1,6 @@
 package com.ddducn.assignment8;
 
-public interface GamePlay {
+public interface GamePlayDelegate {
     void scoreUpdate(int score);
-    void gameStart();
     void gameEnd();
 }

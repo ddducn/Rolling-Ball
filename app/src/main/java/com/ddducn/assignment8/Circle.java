@@ -60,7 +60,9 @@ public class Circle extends VisibleObject {
 
     public boolean isIntersectToCircleH(Circle circle) {
         double angle = angleToCircle(circle);
-        return angle < 45 && angle > -45 || angle > 90 && angle < -90;
+        return angle <= 45 && angle >= -45 ||
+                angle >= 135 && angle <= 180 ||
+                angle >= -180 && angle <= -135;
     }
 
     public double angleToCircle(Circle circle) {
