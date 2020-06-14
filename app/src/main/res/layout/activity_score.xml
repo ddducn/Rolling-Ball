@@ -36,7 +36,6 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_marginTop="500dp"
-        android:shadowRadius="12dp"
         android:background="@drawable/button_shape"
         android:layout_gravity="center"
         android:text="close" />

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameActivity extends FullScreenActivity implements GamePlayDelegate {
     private String userName = "DDDucn";
@@ -50,7 +49,7 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
     }
 
     private void showGameStartMessage() {
-        Toast.makeText(GameActivity.this, "Play now!", Toast.LENGTH_SHORT).show();
+        showMessage(GameActivity.this, "Fling the ball now!");
     }
 
     public void onResetButtonClick(View v) {
