@@ -6,13 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".ScoreActivity">
 
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   >
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="score screen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        android:text="Score"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="60dp" />
+
+    <ListView
+    android:id="@+id/Rank"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  </ListView>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="55dp"
+        android:textSize="12pt"
+       android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginTop="500dp"
+        android:shadowRadius="12dp"
+        android:background="@drawable/button_shape"
+        android:layout_gravity="center"
+        android:text="close" />
+
+</LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
