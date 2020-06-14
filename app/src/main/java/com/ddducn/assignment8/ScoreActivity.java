@@ -1,7 +1,7 @@
 package com.ddducn.assignment8;
 
 import android.os.Bundle;
-import android.widget.ListView;
+import android.view.View;
 
 
 public class ScoreActivity extends FullScreenActivity {
@@ -11,7 +11,10 @@ public class ScoreActivity extends FullScreenActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+    }
 
-
+    public void onCloseRankBtnClick(View v) {
+        this.finish();
+        setFullScreen();
     }
 }

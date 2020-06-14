@@ -20,7 +20,7 @@
         android:text="Score"
         android:textColor="@color/colorPrimary"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="60dp" />
+        android:textSize="60sp" />
 
     <ListView
     android:id="@+id/Rank"
@@ -38,7 +38,8 @@
         android:layout_marginTop="500dp"
         android:background="@drawable/button_shape"
         android:layout_gravity="center"
-        android:text="close" />
+        android:text="close"
+        android:onClick="onCloseRankBtnClick"/>
 
 </LinearLayout>
 
