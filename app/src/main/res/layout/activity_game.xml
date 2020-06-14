@@ -22,28 +22,26 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/cancel"
             android:paddingTop="20dp"
-            />
+            android:onClick="onCloseGameBtnClick"/>
 
 
-    <TextView
-        android:id="@+id/scoreView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Score: 0"
-        android:textColor="@color/white"
-        android:textSize="70px"
-        android:paddingTop="13dp"
-        />
+        <TextView
+            android:id="@+id/scoreView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Score: 0"
+            android:textColor="@color/white"
+            android:textSize="70px"
+            android:paddingTop="13dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/restart"
-        android:paddingTop="18dp"
-        android:onClick="onResetButtonClick"
-        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/restart"
+            android:paddingTop="18dp"
+            android:onClick="onResetButtonClick" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -51,16 +49,14 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/rank"
             android:paddingTop="18dp"
-            />
+            android:onClick="onRankBtnClick"/>
 
-</LinearLayout>
+    </LinearLayout>
 
     <com.ddducn.assignment8.GameCanvas
         android:id="@+id/gameCanvas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
-
-        />
+        android:layout_weight="10" />
 
 </LinearLayout>

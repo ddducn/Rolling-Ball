@@ -211,7 +211,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
 
     @Override
     public void requestReset() {
-        reset();
+        if (isPlaying) reset();
     }
 
     private class FlingGestureListener extends GestureDetector.SimpleOnGestureListener {

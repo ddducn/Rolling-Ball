@@ -36,7 +36,7 @@
 
         <Button
             android:layout_marginTop="10dp"
-            android:id="@+id/playBtn"
+            android:id="@+id/welcomePlayBtn"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:text="@string/play_btn"
@@ -46,7 +46,7 @@
             android:onClick="onPlayBtnClick" />
 
         <Button
-            android:id="@+id/rankBtn"
+            android:id="@+id/welcomeRankBtn"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"

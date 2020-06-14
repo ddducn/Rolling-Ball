@@ -2,6 +2,7 @@ package com.ddducn.assignment8;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -52,8 +53,18 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
         showMessage(GameActivity.this, "Fling the ball now!");
     }
 
+    public void onCloseGameBtnClick(View v) {
+        this.finish();
+        setFullScreen();
+    }
+
     public void onResetButtonClick(View v) {
         if (gameActivityDelegate != null) gameActivityDelegate.requestReset();
+    }
+
+    public void onRankBtnClick(View v) {
+        Intent intent = new Intent(this, ScoreActivity.class);
+        startActivity(intent);
     }
 
     @Override
