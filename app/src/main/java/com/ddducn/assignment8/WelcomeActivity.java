@@ -13,6 +13,7 @@ public class WelcomeActivity extends FullScreenActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +32,6 @@ public class WelcomeActivity extends FullScreenActivity {
 
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("playerName", player);
-        startActivity(intent);
-    }
-
-    public void onRankBtnClick(View v) {
-        Intent intent = new Intent(this, ScoreActivity.class);
         startActivity(intent);
     }
 }

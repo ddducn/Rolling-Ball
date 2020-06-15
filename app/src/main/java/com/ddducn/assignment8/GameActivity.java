@@ -4,14 +4,22 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class GameActivity extends FullScreenActivity implements GamePlayDelegate {
     private String playerName;
     private int currentScore;
     private TextView scoreView;
     private AlertDialog.Builder alert;
+    private Set<ScoreRecord> scoreSets = new HashSet<>();
+    private List<ScoreRecord> finalScores = new ArrayList<>();
 
     public GameActivityDelegate gameActivityDelegate;
 
@@ -25,7 +33,9 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
         GameCanvas gc = findViewById(R.id.gameCanvas);
         gc.gamePlayDelegate = this;
 
-        playerName = getIntent().getStringExtra("playerName");
+        Intent intent = getIntent();
+        playerName = intent.getStringExtra("playerName");
+
         showGameStartMessage();
         setupGameEndAlert();
     }
@@ -63,6 +73,8 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
 
     public void onRankBtnClick(View v) {
         Intent intent = new Intent(this, ScoreActivity.class);
+        intent.putExtra("player", playerName);
+        intent.putExtra("scores", finalScores.toArray());
         startActivity(intent);
     }
 
@@ -74,7 +86,27 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
 
     @Override
     public void gameEnd() {
+        recordScores(5);
+
         alert.setMessage("Your score: " + currentScore);
         alert.show();
+    }
+
+    private void recordScores(int topCount) {
+        if (currentScore == 0) return;
+        ScoreRecord sr = new ScoreRecord(currentScore);
+        scoreSets.add(sr);
+
+        PriorityQueue<ScoreRecord> sortedScores = new PriorityQueue<>(scoreSets);
+        finalScores.clear();
+        scoreSets.clear();
+
+        for (int i = 0; i < topCount; i++) {
+            if (sortedScores.isEmpty()) break;
+            ScoreRecord current = sortedScores.poll();
+            finalScores.add(current);
+            scoreSets.add(current);
+        }
+        sortedScores.clear();
     }
 }

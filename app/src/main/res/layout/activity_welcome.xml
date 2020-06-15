@@ -45,17 +45,6 @@
             android:paddingRight="5dp"
             android:onClick="onPlayBtnClick" />
 
-        <Button
-            android:id="@+id/welcomeRankBtn"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/rank_btn"
-            android:background="#FFFFFF"
-            android:drawableRight="@drawable/icon_rank"
-            android:paddingRight="5dp"
-            android:onClick="onRankBtnClick" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
