@@ -7,41 +7,39 @@
     tools:context=".ScoreActivity">
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-   >
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:text="Score"
-        android:textColor="@color/colorPrimary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="60sp" />
+        <TextView
+            android:id="@+id/scoreTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="60sp" />
 
-    <ListView
-    android:id="@+id/Rank"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-  </ListView>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp" />
 
-    <Button
-        android:layout_width="170dp"
-        android:layout_height="55dp"
-        android:textSize="12pt"
-       android:backgroundTint="@color/colorPrimary"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:layout_marginTop="500dp"
-        android:background="@drawable/button_shape"
-        android:layout_gravity="center"
-        android:text="close"
-        android:onClick="onCloseRankBtnClick"/>
-
-</LinearLayout>
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="55dp"
+            android:textSize="12pt"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/button_shape"
+            android:layout_gravity="center"
+            android:text="close"
+            android:onClick="onCloseRankBtnClick"/>
+    </LinearLayout>
 
 
 

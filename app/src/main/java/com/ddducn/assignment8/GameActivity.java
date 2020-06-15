@@ -72,9 +72,14 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
     }
 
     public void onRankBtnClick(View v) {
+        String[] scores = new String[finalScores.size()];
+        for (int i = 0; i < finalScores.size(); i++) {
+            scores[i] = finalScores.get(i).toString();
+        }
+
         Intent intent = new Intent(this, ScoreActivity.class);
         intent.putExtra("player", playerName);
-        intent.putExtra("scores", finalScores.toArray());
+        intent.putExtra("scores", scores);
         startActivity(intent);
     }
 

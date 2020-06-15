@@ -1,16 +1,35 @@
 package com.ddducn.assignment8;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class ScoreActivity extends FullScreenActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+
+        Intent intent = getIntent();
+        String[] scores =  intent.getStringArrayExtra("scores");
+        String player = intent.getStringExtra("player");
+
+        if (scores.length == 0) {
+            scores = new String[1];
+            scores[0] = "No top score available, please play the game first";
+        }
+
+        TextView textView = findViewById(R.id.scoreTitle);
+        textView.setText(player + "'s \ntop scores");
+
+        ListView listView = findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scores);
+        listView.setAdapter(adapter);
     }
 
     public void onCloseRankBtnClick(View v) {
