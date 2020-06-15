@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class GameActivity extends FullScreenActivity implements GamePlayDelegate {
-    private String userName = "DDDucn";
+    private String playerName;
     private int currentScore;
     private TextView scoreView;
     private AlertDialog.Builder alert;
@@ -20,19 +20,19 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        showGameStartMessage();
-
         scoreView = findViewById(R.id.scoreView);
 
         GameCanvas gc = findViewById(R.id.gameCanvas);
         gc.gamePlayDelegate = this;
 
+        playerName = getIntent().getStringExtra("playerName");
+        showGameStartMessage();
         setupGameEndAlert();
     }
 
     private void setupGameEndAlert() {
         alert = new AlertDialog.Builder(this);
-        alert.setTitle("Game Over! " + userName);
+        alert.setTitle("You are dead! " + playerName);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -50,12 +50,11 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
     }
 
     private void showGameStartMessage() {
-        showMessage(GameActivity.this, "Fling the ball now!");
+        showMessage(GameActivity.this, playerName + ", Fling the ball now!");
     }
 
     public void onCloseGameBtnClick(View v) {
         this.finish();
-        setFullScreen();
     }
 
     public void onResetButtonClick(View v) {

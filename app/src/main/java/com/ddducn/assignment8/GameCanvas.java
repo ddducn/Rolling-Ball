@@ -45,9 +45,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
         super(context, attrs);
 
         setupBall();
-
         setupTargets();
-
         setupObstacles();
 
         gestureDetector = new GestureDetector(context, new FlingGestureListener());

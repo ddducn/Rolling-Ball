@@ -23,12 +23,14 @@ public class WelcomeActivity extends FullScreenActivity {
     }
 
     public void onPlayBtnClick(View v) {
-        if (nameInput.getText().toString().isEmpty()) {
+        String player = nameInput.getText().toString();
+        if (player.isEmpty()) {
             showMessage(this, "Please input your name to start");
             return;
         }
 
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("playerName", player);
         startActivity(intent);
     }
 

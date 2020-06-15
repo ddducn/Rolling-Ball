@@ -15,6 +15,5 @@ public class ScoreActivity extends FullScreenActivity {
 
     public void onCloseRankBtnClick(View v) {
         this.finish();
-        setFullScreen();
     }
 }
