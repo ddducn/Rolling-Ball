@@ -4,11 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class FullScreenActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +25,11 @@ public class FullScreenActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(uiOpts);
     }
 
+    /**
+     * show message
+     * @param context showing context
+     * @param msg message
+     */
     protected void showMessage(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }

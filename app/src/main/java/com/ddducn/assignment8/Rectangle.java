@@ -5,10 +5,10 @@ public class Rectangle extends VisibleObject {
     private double height;
 
     /**
-     * @param x - left corner x
-     * @param y - right corner y
-     * @param width - rect width
-     * @param height - rect height
+     * @param x top left x
+     * @param y top left y
+     * @param width rect width
+     * @param height rect height
      */
     public Rectangle(double x, double y, double width, double height) {
         this.x = x;
@@ -21,15 +21,7 @@ public class Rectangle extends VisibleObject {
         return width;
     }
 
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
     public double getHeight() {
         return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
     }
 }

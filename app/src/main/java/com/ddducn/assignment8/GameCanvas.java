@@ -4,42 +4,33 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 
 public class GameCanvas extends View implements GameActivityDelegate {
-    // paint
-    private Paint paint = new Paint();
+    private Paint paint = new Paint(); // paint
 
-    // objects
-    private Circle ball;
-    private Circle[] targets = new Circle[6];
-    private Rectangle[] obstacles = new Rectangle[6];
+    private Circle ball; // ball
+    private Circle[] targets = new Circle[6]; // targets
+    private Rectangle[] obstacles = new Rectangle[6]; // obstacles
+    private GestureDetector gestureDetector; // gesture detector
 
-    private GestureDetector gestureDetector;
+    private double ballAccX = 0; // ball accelerated x
+    private double ballAccY = 0; // ball accelerated y
 
-    private double ballAccX = 0;
-    private double ballAccY = 0;
+    private double canvasW = 0; // canvas width
+    private double canvasH = 0; // canvas height
 
-    private double canvasW = 0;
-    private double canvasH = 0;
+    private int hObsMoveFlag = 1; // horizontal movable obstacle flag
+    private int vObsMoveFlag = 1; // vertical movable obstacle flag
 
-    // const time value, t * t / 2
-    private final double STEP_TIMES = 0.04 * 0.04 * 0.5;
+    private final int[] BALL_ORIGINAL = {750, 1500}; // original ball coordinate
 
-    private int hObsMoveFlag = 1;
-    private int vObsMoveFlag = 1;
-    private final double OBS_MOVE_STEP = 10;
+    private boolean isPlaying = false; // is playing
 
-    private final int[] BALL_ORIGINAL = {750, 1500};
-
-    private boolean isPlaying = false;
-
-    public GamePlayDelegate gamePlayDelegate;
+    public GamePlayDelegate gamePlayDelegate; // delegate
 
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +41,9 @@ public class GameCanvas extends View implements GameActivityDelegate {
         ((GameActivity) context).gameActivityDelegate = this;
     }
 
+    /**
+     * create objects
+     */
     private void setupObjects() {
         // create ball
         ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0, 0);
@@ -75,7 +69,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        flingBall();
+        moveBall();
         moveObstacles();
         obstacleCollisionDetect();
         targetCollisionDetect();
@@ -85,6 +79,10 @@ public class GameCanvas extends View implements GameActivityDelegate {
         invalidate();
     }
 
+    /**
+     * draw objects
+     * @param canvas canvas to draw
+     */
     private void drawObjects(Canvas canvas) {
         // draw ball
         paint.setColor(ball.getColor());
@@ -103,30 +101,48 @@ public class GameCanvas extends View implements GameActivityDelegate {
         }
     }
 
-    private void flingBall() {
+    /**
+     * move the ball
+     */
+    private void moveBall() {
         if (!isPlaying) return;
 
+        // is current ball hit to h or v of screen
         if (isToHEdge()) ballAccX = -ballAccX;
         if (isToVEdge()) ballAccY = -ballAccY;
 
+        // const time value, t * t / 2
+        double STEP_TIMES = 0.04 * 0.04 * 0.5;
         double dX = ballAccX * STEP_TIMES;
         double dY = ballAccY * STEP_TIMES;
 
+        // move
         ball.moveX(dX);
         ball.moveY(dY);
     }
 
+    /**
+     * if ball hits to h screen
+     */
     private boolean isToHEdge() {
         return ball.getX() <= ball.getR() ||
                 ball.getX() >= canvasW - ball.getR();
     }
 
+    /**
+     * if ball hits to v screen
+     */
     private boolean isToVEdge() {
         return ball.getY() <= ball.getR() ||
                 ball.getY() >= canvasH - ball.getR();
     }
 
+    /**
+     * move obstacles
+     */
     private void moveObstacles() {
+        double OBS_MOVE_STEP = 10;
+
         // horizontal movable obs
         Rectangle hObs = obstacles[5];
         if (hObs.getX() <= 350) hObsMoveFlag = 1;
@@ -140,9 +156,13 @@ public class GameCanvas extends View implements GameActivityDelegate {
         vObs.moveY(OBS_MOVE_STEP * vObsMoveFlag);
     }
 
+    /**
+     * obstacle collision detect
+     */
     private void obstacleCollisionDetect() {
         if (!isPlaying) return;
         for (Rectangle obs: obstacles) {
+            // reset the game if ball hit to a obstacle
             if (ball.rectIntersect(obs)) {
                 reset();
                 return;
@@ -150,39 +170,55 @@ public class GameCanvas extends View implements GameActivityDelegate {
         }
     }
 
+    /**
+     * target collision detect
+     */
     private void targetCollisionDetect() {
         if (!isPlaying) return;
         for (Circle target: targets) {
             if (!ball.circleIntersect(target)) continue;
 
+            // if ball hits the target horizontally
             if (ball.isIntersectToCircleH(target)) {
                 ballAccX = -ballAccX;
-            } else {
+            } else { // vertically
                 ballAccY = -ballAccY;
             }
 
+            // append scorer and move ball
             addScore(target);
-            flingBall();
+            moveBall();
 
             return;
         }
     }
 
+    /**
+     * append score
+     * @param target score from target
+     */
     private void addScore(Circle target) {
         ball.addScore(target.getScore());
 
+        // notify delegate with latest score
         if (gamePlayDelegate != null) gamePlayDelegate.scoreUpdate(ball.getScore());
     }
 
+    /**
+     * reset the game
+     */
     private void reset() {
+        // reset the ball to originally positions and make it static
         ballAccX = 0;
         ballAccY = 0;
         ball.setX(BALL_ORIGINAL[0]);
         ball.setY(BALL_ORIGINAL[1]);
         ball.setScore(0);
 
+        // update game status
         isPlaying = false;
 
+        // notify delegate game is ended
         if (gamePlayDelegate != null) gamePlayDelegate.gameEnd();
     }
 
@@ -190,6 +226,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
+        // new w and h
         canvasW = w;
         canvasH = h;
     }
@@ -218,12 +255,10 @@ public class GameCanvas extends View implements GameActivityDelegate {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (isPlaying) return true;
+            // stop fling if the game is ongoing and the touch point is far from the ball
+            if (isPlaying || ball.distance(e1.getX(0), e1.getY(0)) > 100) return true;
 
-            double touchX = e1.getX(0);
-            double touchY = e1.getY(0);
-            if (ball.distance(touchX, touchY) > 100) return true;
-
+            // setup accelerated values and start the game
             ballAccX = velocityX;
             ballAccY = velocityY;
             isPlaying = true;

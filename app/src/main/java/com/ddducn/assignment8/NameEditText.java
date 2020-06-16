@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 
 public class NameEditText extends androidx.appcompat.widget.AppCompatEditText {
-
-
     public NameEditText(Context context) {
         super(context);
     }
@@ -21,6 +19,7 @@ public class NameEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        // clear focus when pressing the back key after finishing inputting the name
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) this.clearFocus();
 
         return super.onKeyPreIme(keyCode, event);

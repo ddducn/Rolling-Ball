@@ -3,6 +3,7 @@ package com.ddducn.assignment8;
 abstract public class VisibleObject {
     protected double x;
     protected double y;
+
     protected int color;
 
     public double getX() {
@@ -21,11 +22,19 @@ abstract public class VisibleObject {
         this.y = y;
     }
 
+    /**
+     * move x with distance
+     * @param dis distance
+     */
     public void moveX(double dis) {
         if (dis == 0) return;
         x += dis;
     }
 
+    /**
+     * move y with distance
+     * @param dis distance
+     */
     public void moveY(double dis) {
         if (dis == 0) return;
         y += dis;
