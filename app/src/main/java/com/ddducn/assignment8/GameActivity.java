@@ -4,23 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.Arrays;
 
 public class GameActivity extends FullScreenActivity implements GamePlayDelegate {
     private String playerName;
     private int currentScore;
     private TextView scoreView;
     private AlertDialog.Builder alert;
-    private Set<ScoreRecord> scoreSets = new HashSet<>();
-    private List<ScoreRecord> finalScores = new ArrayList<>();
-
+    private int[] finalScores;
+    private int scoreCount;
     public GameActivityDelegate gameActivityDelegate;
 
     @Override
@@ -72,9 +66,15 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
     }
 
     public void onRankBtnClick(View v) {
-        String[] scores = new String[finalScores.size()];
-        for (int i = 0; i < finalScores.size(); i++) {
-            scores[i] = finalScores.get(i).toString();
+        if (gameActivityDelegate != null && gameActivityDelegate.isPlaying()) return;
+
+        String[] scores = new String[scoreCount == 0 ? 1 : scoreCount];
+        if (scoreCount == 0) {
+            scores[0] = "No top score available, please play the game first";
+        } else {
+            for (int i = 0; i < scoreCount; i++) {
+                scores[i] = finalScores[finalScores.length - 1 - i] + "";
+            }
         }
 
         Intent intent = new Intent(this, ScoreActivity.class);
@@ -99,19 +99,26 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
 
     private void recordScores(int topCount) {
         if (currentScore == 0) return;
-        ScoreRecord sr = new ScoreRecord(currentScore);
-        scoreSets.add(sr);
+        if (finalScores == null) finalScores = new int[topCount];
 
-        PriorityQueue<ScoreRecord> sortedScores = new PriorityQueue<>(scoreSets);
-        finalScores.clear();
-        scoreSets.clear();
-
-        for (int i = 0; i < topCount; i++) {
-            if (sortedScores.isEmpty()) break;
-            ScoreRecord current = sortedScores.poll();
-            finalScores.add(current);
-            scoreSets.add(current);
+        for (int i = topCount - 1; i >= topCount - scoreCount; i--) {
+            if (finalScores[i] == currentScore) return;
         }
-        sortedScores.clear();
+
+        if (scoreCount == topCount) {
+            if (currentScore < finalScores[0]) return;
+
+            finalScores[0] = currentScore;
+
+            if (finalScores[0] > finalScores[1]) Arrays.sort(finalScores);
+
+            return;
+        }
+
+        finalScores[topCount - scoreCount - 1] = currentScore;
+
+        if (scoreCount >= 1 && finalScores[topCount - scoreCount - 1] > finalScores[topCount - scoreCount]) Arrays.sort(finalScores);
+
+        scoreCount += 1;
     }
 }

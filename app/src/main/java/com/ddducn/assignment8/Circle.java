@@ -1,10 +1,8 @@
 package com.ddducn.assignment8;
 
-import android.util.Log;
-
 public class Circle extends VisibleObject {
     private double r;
-    private int score = 0;
+    private int score;
     private final double SQRT_2 = Math.sqrt(2);
 
     /**
@@ -21,10 +19,6 @@ public class Circle extends VisibleObject {
 
     public double getR() {
         return r;
-    }
-
-    public void setR(double r) {
-        this.r = r;
     }
 
     public int getScore() {

@@ -4,7 +4,7 @@
     <string name="input_name">input your name</string>
     <string name="play_btn">play</string>
     <string name="rank_btn">rank</string>
-    <string name="close">CLOSE</string>
+    <string name="close">close</string>
     <string name="score">Score</string>
     <string name="score0">Score: 0</string>
     <string name="restart">restart</string>

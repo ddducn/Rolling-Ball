@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:text="@string/score"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
             android:textColor="@color/colorPrimary"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="60sp" />
@@ -33,11 +32,10 @@
         <Button
             android:layout_width="170dp"
             android:layout_height="55dp"
-            android:textSize="12pt"
+            android:textSize="10pt"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/white"
             android:gravity="center"
-            android:background="@drawable/button_shape"
             android:layout_gravity="center"
             android:text="@string/close"
             android:onClick="onCloseRankBtnClick"/>

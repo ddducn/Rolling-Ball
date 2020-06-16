@@ -44,32 +44,25 @@ public class GameCanvas extends View implements GameActivityDelegate {
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        setupBall();
-        setupTargets();
-        setupObstacles();
+        setupObjects();
 
         gestureDetector = new GestureDetector(context, new FlingGestureListener());
-
         ((GameActivity) context).gameActivityDelegate = this;
     }
 
-    private void setupBall() {
+    private void setupObjects() {
         // create ball
         ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0, 0);
-        ball.setColor(getResources().getColor(R.color.purple));
-    }
+        ball.setColor(getResources().getColor(R.color.colorAccent));
 
-    private void setupTargets() {
         // create targets
         int[][] targetsCoors = {{550, 200}, {700, 400}, {150, 800}, {350, 500}, {350, 1400}, {750, 800}};
-        int[] scores = {1, 1, 2, 2, 3, 3};
+        int[] scores = {1, 1, 5, 2, 3, 1};
         for (int i = 0; i < targets.length; i++) {
             targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50, scores[i]);
             targets[i].setColor(getResources().getColor(R.color.colorPrimary));
         }
-    }
 
-    private void setupObstacles() {
         // create obstacles
         int[][] obstaclesCoors = {{100, 600}, {150, 100}, {650, 950}, {300, 1600}, {100, 1400}, {50, 1300}};
         for (int i = 0; i < obstacles.length; i++) {
@@ -210,6 +203,11 @@ public class GameCanvas extends View implements GameActivityDelegate {
     @Override
     public void requestReset() {
         if (isPlaying) reset();
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return isPlaying;
     }
 
     private class FlingGestureListener extends GestureDetector.SimpleOnGestureListener {
