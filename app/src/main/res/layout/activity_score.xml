@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,8 +16,9 @@
             android:id="@+id/scoreTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Score"
-            android:paddingLeft="10dp"
+            android:text="@string/score"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textColor="@color/colorPrimary"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="60sp" />
@@ -26,7 +27,8 @@
             android:id="@+id/listView"
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="400dp" />
+            android:layout_height="400dp"
+            />
 
         <Button
             android:layout_width="170dp"
@@ -37,7 +39,7 @@
             android:gravity="center"
             android:background="@drawable/button_shape"
             android:layout_gravity="center"
-            android:text="close"
+            android:text="@string/close"
             android:onClick="onCloseRankBtnClick"/>
     </LinearLayout>
 

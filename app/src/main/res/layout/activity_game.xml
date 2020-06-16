@@ -17,25 +17,28 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:contentDescription="@string/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/cancel"
-            android:paddingTop="20dp"
+            android:paddingTop="22dp"
             android:onClick="onCloseGameBtnClick"/>
 
 
         <TextView
+            android:contentDescription="@string/score0"
             android:id="@+id/scoreView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Score: 0"
+            android:text="@string/score0"
             android:textColor="@color/white"
-            android:textSize="70px"
-            android:paddingTop="13dp" />
+            android:textSize="30sp"
+            android:paddingTop="6dp" />
 
         <ImageView
+            android:contentDescription="@string/restart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,6 +47,7 @@
             android:onClick="onResetButtonClick" />
 
         <ImageView
+            android:contentDescription="@string/rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

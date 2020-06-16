@@ -224,7 +224,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
 
             double touchX = e1.getX(0);
             double touchY = e1.getY(0);
-            if (ball.distance(touchX, touchY) > 20) return true;
+            if (ball.distance(touchX, touchY) > 100) return true;
 
             ballAccX = velocityX;
             ballAccY = velocityY;
