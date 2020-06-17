@@ -26,7 +26,7 @@ public class GameCanvas extends View implements GameActivityDelegate {
     private int hObsMoveFlag = 1; // horizontal movable obstacle flag
     private int vObsMoveFlag = 1; // vertical movable obstacle flag
 
-    private final int[] BALL_ORIGINAL = {750, 1500}; // original ball coordinate
+    private final double[] BALL_ORIGINAL = {0.69, 0.86}; // original ball coordinate
 
     private boolean isPlaying = false; // is playing
 
@@ -34,8 +34,6 @@ public class GameCanvas extends View implements GameActivityDelegate {
 
     public GameCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        setupObjects();
 
         gestureDetector = new GestureDetector(context, new FlingGestureListener());
         ((GameActivity) context).gameActivityDelegate = this;
@@ -46,21 +44,21 @@ public class GameCanvas extends View implements GameActivityDelegate {
      */
     private void setupObjects() {
         // create ball
-        ball = new Circle(BALL_ORIGINAL[0], BALL_ORIGINAL[1], 50.0, 0);
+        ball = new Circle(BALL_ORIGINAL[0] * canvasW, BALL_ORIGINAL[1] * canvasH, 0.05 * canvasW, 0);
         ball.setColor(getResources().getColor(R.color.colorAccent));
 
         // create targets
-        int[][] targetsCoors = {{550, 200}, {700, 400}, {150, 800}, {350, 500}, {350, 1400}, {750, 800}};
+        double[][] targetsCoors = {{0.51, 0.11}, {0.65, 0.23}, {0.14, 0.46}, {0.32, 0.29}, {0.32, 0.8}, {0.7, 0.46}};
         int[] scores = {1, 1, 5, 2, 3, 1};
         for (int i = 0; i < targets.length; i++) {
-            targets[i] = new Circle(targetsCoors[i][0], targetsCoors[i][1], 50, scores[i]);
+            targets[i] = new Circle(targetsCoors[i][0] * canvasW, targetsCoors[i][1] * canvasH, 0.05 * canvasW, scores[i]);
             targets[i].setColor(getResources().getColor(R.color.colorPrimary));
         }
 
         // create obstacles
-        int[][] obstaclesCoors = {{100, 600}, {150, 100}, {650, 950}, {300, 1600}, {100, 1400}, {50, 1300}};
+        double[][] obstaclesCoors = {{0.09, 0.34}, {0.14, 0.06}, {0.6, 0.54}, {0.28, 0.92}, {0.09, 0.8}, {0.05, 0.74}};
         for (int i = 0; i < obstacles.length; i++) {
-            obstacles[i] = new Rectangle(obstaclesCoors[i][0], obstaclesCoors[i][1], 150, 25);
+            obstacles[i] = new Rectangle(obstaclesCoors[i][0] * canvasW, obstaclesCoors[i][1] * canvasH, 0.14 * canvasW, 0.014 * canvasH);
             obstacles[i].setColor(getResources().getColor(R.color.black));
         }
     }
@@ -145,14 +143,14 @@ public class GameCanvas extends View implements GameActivityDelegate {
 
         // horizontal movable obs
         Rectangle hObs = obstacles[5];
-        if (hObs.getX() <= 350) hObsMoveFlag = 1;
-        if (hObs.getX() >= 700) hObsMoveFlag = -1;
+        if (hObs.getX() <= (0.32 * canvasW)) hObsMoveFlag = 1;
+        if (hObs.getX() >= (0.65 * canvasW)) hObsMoveFlag = -1;
         hObs.moveX(OBS_MOVE_STEP * hObsMoveFlag);
 
         // vertical movable obs
         Rectangle vObs = obstacles[4];
-        if (vObs.getY() <= 900) vObsMoveFlag = 1;
-        if (vObs.getY() >= 1200) vObsMoveFlag = -1;
+        if (vObs.getY() <= (0.52 * canvasH)) vObsMoveFlag = 1;
+        if (vObs.getY() >= (0.69 * canvasH)) vObsMoveFlag = -1;
         vObs.moveY(OBS_MOVE_STEP * vObsMoveFlag);
     }
 
@@ -211,8 +209,8 @@ public class GameCanvas extends View implements GameActivityDelegate {
         // reset the ball to originally positions and make it static
         ballAccX = 0;
         ballAccY = 0;
-        ball.setX(BALL_ORIGINAL[0]);
-        ball.setY(BALL_ORIGINAL[1]);
+        ball.setX(BALL_ORIGINAL[0] * canvasW);
+        ball.setY(BALL_ORIGINAL[1] * canvasH);
         ball.setScore(0);
 
         // update game status
@@ -229,6 +227,8 @@ public class GameCanvas extends View implements GameActivityDelegate {
         // new w and h
         canvasW = w;
         canvasH = h;
+
+        setupObjects();
     }
 
     @Override
