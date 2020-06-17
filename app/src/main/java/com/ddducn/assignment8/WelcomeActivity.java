@@ -31,9 +31,11 @@ public class WelcomeActivity extends FullScreenActivity {
 
         // show the tip if no name is inputted
         if (player.isEmpty()) {
-            showMessage(this, "Please input your name to start");
+            showMessage(this, "Please input your name to play");
             return;
         }
+
+        nameInput.setText("");
 
         // start the game and pass player
         Intent intent = new Intent(this, GameActivity.class);

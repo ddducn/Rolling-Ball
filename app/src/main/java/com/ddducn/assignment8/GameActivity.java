@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import java.util.Arrays;
 
 public class GameActivity extends FullScreenActivity implements GamePlayDelegate {
@@ -48,14 +49,13 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // reset current score
-                currentScore = 0;
-                scoreView.setText("Score: " + currentScore);
+                resetScore();
             }
         });
         alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+                resetScore();
                 setFullScreen();
                 showGameStartMessage();
             }
@@ -66,7 +66,7 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
      * show game start message
      */
     private void showGameStartMessage() {
-        showMessage(GameActivity.this, playerName + ", Fling the ball now!");
+        showMessage(GameActivity.this, playerName + ", throw the light green ball now!");
     }
 
     /**
@@ -120,8 +120,16 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
         recordScores(5);
 
         // show alert
-        alert.setMessage("Your score: " + currentScore);
+        alert.setMessage("Final score: " + currentScore);
         alert.show();
+    }
+
+    /**
+     * reset current score
+     */
+    private void resetScore() {
+        currentScore = 0;
+        scoreView.setText("Score: " + currentScore);
     }
 
     /**
@@ -158,5 +166,12 @@ public class GameActivity extends FullScreenActivity implements GamePlayDelegate
 
         // update current score count
         scoreCount += 1;
+    }
+
+    // start the game when on resume
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showGameStartMessage();
     }
 }
